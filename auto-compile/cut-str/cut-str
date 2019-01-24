@@ -1,0 +1,2 @@
+# query change time of file , cut filed "Change" of int seconds
+stat t1.h | grep 'Change' | awk '{print $3}' | cut -d ':' -f 3 | cut -d '.' -f 1

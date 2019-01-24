@@ -1,0 +1,4 @@
+# time mathematics
+x2=`date -d "2015-08-02 00:00:00" +%s`
+x1=`date -d "2015-08-01 00:00:00" +%s`
+`expr $x1 - $x2`
