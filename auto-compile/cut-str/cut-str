@@ -1,2 +1,4 @@
-# query change time of file , cut filed "Change" of int seconds
-stat t1.h | grep 'Change' | awk '{print $3}' | cut -d ':' -f 3 | cut -d '.' -f 1
+stat test/Hello.java | grep Change | awk {print } | cut -d : -f 3 | cut -d . -f 1
+str1=`stat test/Hello.java | grep Change | awk "{print $3}" | cut -d . -f 1`
+str2=stat test/Hello.java | grep Change | awk "{print $2}"
+2019-01-24 17:18:21

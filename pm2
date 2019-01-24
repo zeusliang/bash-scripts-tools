@@ -1,0 +1,39 @@
+#!/bin/bash
+
+str1=`stat test/Hello.java | grep 'Change' | awk '{print $2}'`
+str2=`stat test/Hello.java | grep 'Change' | awk '{print $3}' | cut -d '.' -f 1`
+
+tm1=`date -d "$str1 $str2" +%s`
+s1=`stat test/Hello.class | grep 'Change' | awk '{print $2}'`
+s2=`stat test/Hello.class | grep 'Change' | awk '{print $3}' | cut -d '.' -f 1`
+
+tm2=`date -d "$s1 $s2" +%s`
+echo "sources=$tm1, class=$tm2"
+#echo `expr $tm1 - $tm2`
+if [ $tm1 -gt $tm2 ]
+then
+	echo " need to recompile"
+	javac -d test test/Hello.java 
+fi
+
+if [ $tm1 -lt $tm2 ]
+then
+	echo " no need recompile"
+fi
+
+function check(){
+    local a="$1"
+    printf "%d" "$a" &>/dev/null && echo "integer" && return
+    printf "%d" "$(echo $a|sed 's/^[+-]\?0\+//')" &>/dev/null && echo "integer" && return
+    printf "%f" "$a" &>/dev/null && echo "number" && return
+    [ ${#a} -eq 1 ] && echo "char" && return
+    echo "string"
+}
+
+echo "$tm1 is " $(check $tm1)
+echo "$tm2 is " $(check $tm2)
+
+if [ $tm1 -gt $tm2 ]
+then
+	echo 'tm1 > tm2'
+fi
